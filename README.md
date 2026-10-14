@@ -1,5 +1,27 @@
 # CurrencyRPC
 
+## STATUS
+
+| Componente | Estado |
+| --- | --- |
+| Local | FUNCIONAL |
+| Tests | 29/29 PASSED |
+| Build | SUCCESS |
+| Dockerfile | READY — no ejecutado localmente |
+| Cloud deployment | DOCUMENTED / NOT EXECUTED — requisito de facturación |
+
+## Inicio rápido
+
+```shell
+mvn clean package
+```
+
+Servidor: `java -jar target/currency-rpc.jar`
+
+Cliente, en otra terminal: `java -cp target/currency-rpc.jar com.currencyrpc.client.CurrencyClient`
+
+La demo muestra conversiones, cinco actualizaciones y dos errores esperados de validación. Para presentar: [guion de cuatro minutos](docs/demo.md), [preguntas de sustentación](docs/guia-sustentacion.md) y [despliegue simulado](docs/despliegue-simulado.md). Evidencia real: [tests](docs/evidencias/tests.txt) y [ejecución local](docs/evidencias/ejecucion-local.txt).
+
 **Sistema distribuido de conversión de monedas utilizando gRPC y Protocol Buffers.**
 
 Proyecto académico de Programación Orientada a la Web, séptimo semestre. Cliente Java de consola y servidor gRPC, sin base de datos, frontend, autenticación ni APIs externas. Las tasas son **fijas y simuladas**, no cotizaciones de mercado.
@@ -108,7 +130,7 @@ Terminal 2:
 java -cp target/currency-rpc.jar com.currencyrpc.client.CurrencyClient
 ```
 
-La demostración lista seis monedas, convierte `100 USD -> 400000.00 COP` y `500000 COP -> 125.00 USD`, y muestra automáticamente `Update 1` a `Update 5`: 4000, 4004, 3996, 4008 y 4002 para USD/COP. No requiere argumentos para probar el streaming.
+La demostración lista seis monedas, convierte `100 USD -> 400000.00 COP` y `500000 COP -> 125.00 USD`, y muestra automáticamente `Update 1` a `Update 5`: 4000, 4004, 3996, 4008 y 4002 para USD/COP. También envía importe cero y moneda XYZ y comprueba que ambos devuelvan `INVALID_ARGUMENT`. No requiere argumentos.
 
 ### Variables de entorno
 
@@ -152,13 +174,13 @@ Para comprobar un puerto interno diferente:
 docker run --rm -e PORT=8080 -p 9090:8080 currency-rpc:1.0
 ```
 
-**Pendiente de verificación:** Docker no se encontró en el entorno; no se ejecutaron `docker build` ni `docker run`.
+Dockerfile preparado pero no ejecutado localmente porque Docker no está disponible en el entorno.
 
 ## Despliegue en Google Cloud Run
 
 Cloud Run admite gRPC y streaming. Habilitar HTTP/2 con `--use-http2`: Google termina TLS y el contenedor recibe h2c en `0.0.0.0:$PORT`. El cliente externo utiliza TLS y puerto 443. Véanse las fuentes oficiales de [HTTP/2](https://docs.cloud.google.com/run/docs/configuring/http2) y [gRPC](https://docs.cloud.google.com/run/docs/triggering/grpc).
 
-**Estado: no desplegado.** No se encontró `gcloud`. Se necesita Google Cloud CLI, cuenta autenticada, proyecto con facturación activa y permisos para activar APIs, compilar imágenes y desplegar. La demostración se publica sin autenticación de invocación; la organización debe permitir acceso público.
+**Estado: DOCUMENTED / NOT EXECUTED.** El despliegue real no se realizó por el requisito de vincular facturación; se decidió no ingresar tarjeta. La entrega utiliza una [simulación académica expresamente identificada](docs/despliegue-simulado.md), sin servicio activo ni URL pública real. Los comandos siguientes son una referencia futura, no se ejecutan durante la sustentación. Requerirían Google Cloud CLI, autenticación, proyecto con facturación y permisos. En ese caso, el servicio permitiría invocación pública si las políticas de la organización lo admiten.
 
 Ejecutar en PowerShell desde la raíz, sustituyendo el ID de proyecto:
 
@@ -194,6 +216,12 @@ Al terminar: `gcloud run services delete currency-rpc --region us-central1`. La 
 - Un navegador normal no es un cliente gRPC; utilizar el cliente Java incluido.
 
 ## Documentación y referencias
+
+- [Guía de sustentación](docs/guia-sustentacion.md).
+- [Guion y comandos PowerShell/CMD](docs/demo.md).
+- [Despliegue simulado, no activo](docs/despliegue-simulado.md).
+- [Evidencia de tests](docs/evidencias/tests.txt) y [ejecución local](docs/evidencias/ejecucion-local.txt).
+- [Script de verificación](scripts/verificar-entrega.ps1): ejecutar `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verificar-entrega.ps1` con el servidor detenido. Regenera evidencias mediante pruebas y procesos separados, y limpia su proceso temporal.
 
 - [Informe académico](docs/informe.md).
 - [Arquitectura y secuencias](docs/arquitectura.md).

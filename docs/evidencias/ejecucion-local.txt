@@ -1,0 +1,131 @@
+﻿Verification: 2026-10-13 21:07:49 America/Bogota
+COMMAND: mvn clean package
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Detecting the operating system and CPU architecture
+[INFO] ------------------------------------------------------------------------
+[INFO] os.detected.name: windows
+[INFO] os.detected.arch: x86_64
+[INFO] os.detected.bitness: 64
+[INFO] os.detected.version: 10.0
+[INFO] os.detected.version.major: 10
+[INFO] os.detected.version.minor: 0
+[INFO] os.detected.classifier: windows-x86_64
+[INFO] 
+[INFO] --------------------< com.currencyrpc:currency-rpc >--------------------
+[INFO] Building CurrencyRPC 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ currency-rpc ---
+[INFO] Deleting D:\CurrencyRPC\target
+[INFO] 
+[INFO] --- protobuf:0.6.1:compile (default) @ currency-rpc ---
+[INFO] Compiling 1 proto file(s) to D:\CurrencyRPC\target\generated-sources\protobuf\java
+[INFO] 
+[INFO] --- protobuf:0.6.1:compile-custom (default) @ currency-rpc ---
+[INFO] Compiling 1 proto file(s) to D:\CurrencyRPC\target\generated-sources\protobuf\grpc-java
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ currency-rpc ---
+[INFO] skip non existing resourceDirectory D:\CurrencyRPC\src\main\resources
+[INFO] Copying 1 resource from src\main\proto to target\classes
+[INFO] Copying 1 resource from src\main\proto to target\classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ currency-rpc ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 19 source files with javac [debug release 21] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ currency-rpc ---
+[INFO] skip non existing resourceDirectory D:\CurrencyRPC\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ currency-rpc ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 2 source files with javac [debug release 21] to target\test-classes
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ currency-rpc ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.currencyrpc.CurrencyGrpcIntegrationTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.263 s -- in com.currencyrpc.CurrencyGrpcIntegrationTest
+[INFO] Running com.currencyrpc.CurrencyRateServiceTest
+[INFO] Tests run: 19, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.157 s -- in com.currencyrpc.CurrencyRateServiceTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 29, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.3.0:jar (default-jar) @ currency-rpc ---
+[INFO] Building jar: D:\CurrencyRPC\target\currency-rpc.jar
+[INFO] 
+[INFO] --- shade:3.6.0:shade (default) @ currency-rpc ---
+[INFO] Including io.grpc:grpc-netty-shaded:jar:1.76.0 in the shaded jar.
+[INFO] Including io.grpc:grpc-util:jar:1.76.0 in the shaded jar.
+[INFO] Including io.grpc:grpc-core:jar:1.76.0 in the shaded jar.
+[INFO] Including com.google.code.gson:gson:jar:2.11.0 in the shaded jar.
+[INFO] Including com.google.android:annotations:jar:4.1.1.4 in the shaded jar.
+[INFO] Including io.grpc:grpc-context:jar:1.76.0 in the shaded jar.
+[INFO] Including com.google.guava:guava:jar:33.4.8-android in the shaded jar.
+[INFO] Including com.google.guava:failureaccess:jar:1.0.3 in the shaded jar.
+[INFO] Including com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava in the shaded jar.
+[INFO] Including org.jspecify:jspecify:jar:1.0.0 in the shaded jar.
+[INFO] Including com.google.j2objc:j2objc-annotations:jar:3.0.0 in the shaded jar.
+[INFO] Including com.google.errorprone:error_prone_annotations:jar:2.36.0 in the shaded jar.
+[INFO] Including io.perfmark:perfmark-api:jar:0.27.0 in the shaded jar.
+[INFO] Including io.grpc:grpc-api:jar:1.76.0 in the shaded jar.
+[INFO] Including org.codehaus.mojo:animal-sniffer-annotations:jar:1.24 in the shaded jar.
+[INFO] Including io.grpc:grpc-protobuf:jar:1.76.0 in the shaded jar.
+[INFO] Including com.google.code.findbugs:jsr305:jar:3.0.2 in the shaded jar.
+[INFO] Including com.google.api.grpc:proto-google-common-protos:jar:2.59.2 in the shaded jar.
+[INFO] Including io.grpc:grpc-protobuf-lite:jar:1.76.0 in the shaded jar.
+[INFO] Including io.grpc:grpc-stub:jar:1.76.0 in the shaded jar.
+[INFO] Including com.google.protobuf:protobuf-java:jar:3.25.8 in the shaded jar.
+[INFO] Including javax.annotation:javax.annotation-api:jar:1.3.2 in the shaded jar.
+[WARNING] animal-sniffer-annotations-1.24.jar, annotations-4.1.1.4.jar, currency-rpc.jar, error_prone_annotations-2.36.0.jar, failureaccess-1.0.3.jar, grpc-api-1.76.0.jar, grpc-context-1.76.0.jar, grpc-core-1.76.0.jar, grpc-netty-shaded-1.76.0.jar, grpc-protobuf-1.76.0.jar, grpc-protobuf-lite-1.76.0.jar, grpc-stub-1.76.0.jar, grpc-util-1.76.0.jar, gson-2.11.0.jar, guava-33.4.8-android.jar, j2objc-annotations-3.0.0.jar, javax.annotation-api-1.3.2.jar, jspecify-1.0.0.jar, jsr305-3.0.2.jar, listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar, perfmark-api-0.27.0.jar, proto-google-common-protos-2.59.2.jar, protobuf-java-3.25.8.jar define 1 overlapping resource: 
+[WARNING]   - META-INF/MANIFEST.MF
+[WARNING] error_prone_annotations-2.36.0.jar, failureaccess-1.0.3.jar, gson-2.11.0.jar, j2objc-annotations-3.0.0.jar, jspecify-1.0.0.jar define 1 overlapping classes: 
+[WARNING]   - META-INF.versions.9.module-info
+[WARNING] grpc-netty-shaded-1.76.0.jar, javax.annotation-api-1.3.2.jar define 1 overlapping resource: 
+[WARNING]   - META-INF/LICENSE.txt
+[WARNING] maven-shade-plugin has detected that some files are
+[WARNING] present in two or more JARs. When this happens, only one
+[WARNING] single version of the file is copied to the uber jar.
+[WARNING] Usually this is not harmful and you can skip these warnings,
+[WARNING] otherwise try to manually exclude artifacts based on
+[WARNING] mvn dependency:tree -Ddetail=true and the above output.
+[WARNING] See https://maven.apache.org/plugins/maven-shade-plugin/
+[INFO] Replacing original artifact with shaded artifact.
+[INFO] Replacing D:\CurrencyRPC\target\currency-rpc.jar with D:\CurrencyRPC\target\currency-rpc-1.0.0-shaded.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  14.235 s
+[INFO] Finished at: 2026-10-13T21:08:18-05:00
+[INFO] ------------------------------------------------------------------------
+
+COMMAND: PORT=9090 java -jar target/currency-rpc.jar
+CurrencyRPC listening on 0.0.0.0:9090 (gRPC / HTTP/2, simulated rates)
+
+
+ENV: GRPC_HOST=localhost GRPC_PORT=9090 GRPC_TLS=false
+COMMAND: java -cp target/currency-rpc.jar com.currencyrpc.client.CurrencyClient
+=== CurrencyRPC - gRPC Client ===
+Server: localhost:9090 | TLS: false
+1. Supported currencies: [USD, COP, EUR, GBP, JPY, MXN]
+2. Currency conversion (simulated rates)
+100 USD -> 400000.00 COP | Rate: 4000.000000000000 | Conversion completed successfully
+500000 COP -> 125.00 USD | Rate: 0.000250000000 | Conversion completed successfully
+3. Exchange rate streaming: USD -> COP
+Update 1 | USD -> COP | Rate: 4000.000000000000 | Timestamp: 1791943701311
+Update 2 | USD -> COP | Rate: 4004.000000000000 | Timestamp: 1791943702315
+Update 3 | USD -> COP | Rate: 3996.000000000000 | Timestamp: 1791943703329
+Update 4 | USD -> COP | Rate: 4008.000000000000 | Timestamp: 1791943704341
+Update 5 | USD -> COP | Rate: 4002.000000000000 | Timestamp: 1791943705347
+4. Input validation (expected errors)
+Validation 0 USD -> COP | INVALID_ARGUMENT: Amount must be greater than zero
+Validation 100 XYZ -> COP | INVALID_ARGUMENT: Unsupported currency: XYZ
+Demo completed successfully.
+Client exit code: 0

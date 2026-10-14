@@ -2,6 +2,8 @@
 
 **Proyecto:** CurrencyRPC  
 **Asignatura:** Programación Orientada a la Web, séptimo semestre  
+**Tecnologías:** Java 21, Maven, gRPC Java, Protocol Buffers, HTTP/2, JUnit 5 y Dockerfile multi-stage
+
 **Autor, docente e institución:** completar para la entrega  
 **Fecha:** 13 de octubre de 2026
 
@@ -61,6 +63,12 @@ Las tasas por USD son 1 USD, 4000 COP, 0.92 EUR, 0.79 GBP, 150 JPY y 17 MXN. Se 
 
 Se usa `proto3`, paquete `currency.v1`, paquete Java `com.currencyrpc.grpc` y clases separadas mediante `java_multiple_files`. El contrato contiene `ConvertCurrency`, `GetSupportedCurrencies` y `WatchExchangeRate`. Los importes y tasas usan strings decimales para conservar precisión entre lenguajes. Cada actualización añade secuencia y timestamp Unix en milisegundos.
 
+| Método | Patrón | Entrada y salida |
+| --- | --- | --- |
+| ConvertCurrency | Unary | Monedas e importe; devuelve importes, tasa y mensaje |
+| GetSupportedCurrencies | Unary | Solicitud vacía; devuelve seis códigos |
+| WatchExchangeRate | Server streaming | Par monetario; devuelve cinco actualizaciones |
+
 ### Funcionamiento del servidor
 
 `CurrencyServer` escucha en `0.0.0.0`, puerto 9090 o el indicado por `PORT`. Registra el servicio y asigna hilos virtuales a las llamadas. Un hook permite un apagado con espera limitada y cierre forzado si fuera necesario.
@@ -71,6 +79,10 @@ Se validan monedas e importes positivos, con límites de 18 dígitos enteros y 8
 
 El cliente obtiene host, puerto y TLS mediante variables de entorno. Ejecuta una demostración automática, aplica deadline de 30 segundos por RPC, informa errores y cierra el canal. Ante fallo termina con código de salida distinto de cero.
 
+## Validaciones
+
+Se rechazan monedas vacías o desconocidas e importes cero, negativos o con formato inválido. Los límites son 18 dígitos enteros y 8 decimales, sin notación científica. Los códigos se recortan y normalizan a mayúsculas. El adaptador responde `INVALID_ARGUMENT`, sin exponer una excepción Java como contrato al cliente. La demo verifica explícitamente importe cero y moneda XYZ; ambos errores son esperados. Los puertos deben estar entre 1 y 65535, y `GRPC_TLS` acepta `true` o `false`.
+
 ## Pruebas realizadas
 
 Las pruebas unitarias cubren conversiones directas, inversas y cruzadas, redondeo, normalización y entradas inválidas. Las pruebas de integración levantan un servidor Netty en puerto efímero para verificar las tres RPC, estados de error, orden de cinco respuestas y deadline del cliente sin impedir nuevas consultas.
@@ -79,13 +91,15 @@ Comandos reproducibles: `mvn test` y `mvn clean package`. Los reportes están en
 
 ## Dockerización
 
-El Dockerfile compila y prueba con Maven/JDK 21 y ejecuta con JRE 21 como usuario sin privilegios. Respeta `PORT` y expone 9090. `.dockerignore` excluye Git, resultados de compilación y archivos locales. Docker no se encontró en este entorno: la construcción y ejecución de la imagen quedan pendientes de verificación.
+El Dockerfile compila y prueba con Maven/JDK 21 y ejecuta con JRE 21 como usuario sin privilegios. Respeta `PORT` y expone 9090. `.dockerignore` excluye Git, resultados de compilación y archivos locales. Dockerfile preparado pero no ejecutado localmente porque Docker no está disponible en el entorno.
 
 ## Despliegue en la nube
 
 Se eligió Google Cloud Run por su soporte de gRPC y streaming. Con HTTP/2 habilitado, el contenedor recibe h2c; el cliente externo usa TLS en 443. El README incluye comandos de Artifact Registry, Cloud Build y Cloud Run con `--use-http2`.
 
-No se realizó despliegue porque no se encontró Google Cloud CLI. Se requieren cuenta autenticada, proyecto, facturación y permisos. No se atribuyen resultados, URL pública ni mediciones a un despliegue inexistente.
+El despliegue productivo no fue ejecutado debido al requisito de facturación del proveedor cloud. Sin embargo, el sistema quedó preparado mediante Docker, variables de entorno y configuración compatible con HTTP/2.
+
+Se decidió no ingresar tarjeta. La [simulación académica](despliegue-simulado.md) documenta el procedimiento y rotula su URL representativa como simulada y no activa. No existe URL pública real ni evidencia de ejecución cloud. Las pruebas verifican funcionamiento local; no demuestran TLS contra un proveedor ni ejecución del contenedor.
 
 ## Resultados y límites
 
@@ -110,9 +124,12 @@ Verificación del 13 de octubre de 2026, Windows x86_64, JDK 21.0.7 y Maven 3.9.
 | Conversiones | 100 USD = 400000.00 COP; 500000 COP = 125.00 USD |
 | Streaming | Cinco respuestas: 4000, 4004, 3996, 4008 y 4002; finalización correcta |
 | Docker | No ejecutado: herramienta no disponible |
-| Cloud Run | No desplegado: Google Cloud CLI no disponible |
+| Validaciones del cliente | Importe cero y moneda XYZ: `INVALID_ARGUMENT` |
+| Cloud Run | Documentado y simulado; no ejecutado por requisito de facturación |
 
 El acceso inicial a Maven Central fue bloqueado por el sandbox; la compilación se completó al permitir la descarga de dependencias. Las advertencias de Shade sobre metadatos repetidos no impidieron ejecutar el JAR. Los resultados locales no sustituyen la validación pendiente de Docker y Cloud Run.
+
+Las salidas completas de la verificación final se conservan en [tests.txt](evidencias/tests.txt) y [ejecucion-local.txt](evidencias/ejecucion-local.txt), con fecha, comandos y resultados reales. El script `scripts/verificar-entrega.ps1` permite reproducirlas. Para presentar se incluyen una [guía de respuestas](guia-sustentacion.md) y un [guion de cuatro minutos](demo.md).
 
 ## Referencias
 

@@ -3,6 +3,7 @@ package com.currencyrpc.client;
 import com.currencyrpc.config.AppConfig;
 import com.currencyrpc.grpc.*;
 import io.grpc.ManagedChannel;
+import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
 import io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder;
 import java.util.concurrent.TimeUnit;
@@ -32,6 +33,9 @@ public final class CurrencyClient {
             updates.forEachRemaining(update -> System.out.printf("Update %d | %s -> %s | Rate: %s | Timestamp: %d%n",
                     update.getSequence(), update.getFromCurrency(), update.getToCurrency(),
                     update.getExchangeRate(), update.getTimestampEpochMillis()));
+            System.out.println("4. Input validation (expected errors)");
+            verifyInvalidInput(stub, "USD", "COP", "0");
+            verifyInvalidInput(stub, "XYZ", "COP", "100");
             System.out.println("Demo completed successfully.");
         } catch (StatusRuntimeException e) {
             System.err.printf("gRPC error: %s - %s%n", e.getStatus().getCode(), e.getStatus().getDescription());
@@ -45,6 +49,20 @@ public final class CurrencyClient {
             }
         }
         if (exitCode != 0) System.exit(exitCode);
+    }
+
+    private static void verifyInvalidInput(CurrencyServiceGrpc.CurrencyServiceBlockingStub stub,
+                                           String from, String to, String amount) {
+        try {
+            stub.withDeadlineAfter(30, TimeUnit.SECONDS).convertCurrency(ConvertRequest.newBuilder()
+                    .setFromCurrency(from).setToCurrency(to).setAmount(amount).build());
+        } catch (StatusRuntimeException e) {
+            if (e.getStatus().getCode() != Status.Code.INVALID_ARGUMENT) throw e;
+            System.out.printf("Validation %s %s -> %s | %s: %s%n", amount, from, to,
+                    e.getStatus().getCode(), e.getStatus().getDescription());
+            return;
+        }
+        throw new IllegalStateException("Server accepted an invalid demo request");
     }
 
     private static void convert(CurrencyServiceGrpc.CurrencyServiceBlockingStub stub,

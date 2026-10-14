@@ -4,9 +4,9 @@
 
 ```mermaid
 flowchart LR
-    C[CurrencyClient] -->|gRPC / Protobuf / HTTP/2| S[CurrencyServer: 0.0.0.0 PORT]
-    S --> G[CurrencyGrpcService]
-    G --> R[CurrencyRateService]
+    C[Java Client: CurrencyClient] -->|gRPC / Protobuf / HTTP/2| S[Currency Server: CurrencyServer]
+    S --> G[Currency Service: CurrencyGrpcService]
+    G --> R[Exchange Rate Provider: CurrencyRateService]
     R --> M[Tasas inmutables en memoria]
     A[AppConfig] -.-> C
     A -.-> S
@@ -45,10 +45,15 @@ sequenceDiagram
     C->>G: WatchExchangeRate(USD, COP)
     G->>R: exchangeRate(USD, COP)
     R-->>G: Base 4000
-    loop Cinco respuestas; intervalo aproximado de un segundo
-        G->>G: Comprobar cancelación y aplicar variación
-        G-->>C: RateUpdate(tasa, secuencia, timestamp)
-    end
+    G-->>C: RateUpdate 1 - 4000
+    Note over G: Esperar 1 segundo y comprobar cancelación
+    G-->>C: RateUpdate 2 - 4004
+    Note over G: Esperar 1 segundo y comprobar cancelación
+    G-->>C: RateUpdate 3 - 3996
+    Note over G: Esperar 1 segundo y comprobar cancelación
+    G-->>C: RateUpdate 4 - 4008
+    Note over G: Esperar 1 segundo y comprobar cancelación
+    G-->>C: RateUpdate 5 - 4002
     G-->>C: onCompleted / OK
 ```
 
@@ -62,4 +67,4 @@ flowchart LR
     E -->|h2c / PORT| N[Contenedor Java / Netty]
 ```
 
-Localmente se usa h2c. En Cloud Run el cliente externo verifica TLS y el contenedor no administra certificados. La configuración está preparada, pero el despliegue no ha sido ejecutado.
+Localmente se usa h2c. En un despliegue real de Cloud Run, el cliente externo verificaría TLS y el contenedor no administraría certificados. Este diagrama es una arquitectura prevista: el despliegue no fue ejecutado por el requisito de facturación. Véase [despliegue simulado](despliegue-simulado.md). El proveedor de tasas del diagrama es la clase local `CurrencyRateService`, no un servicio externo.
