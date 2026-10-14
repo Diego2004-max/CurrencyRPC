@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package currency.v1;
+option java_multiple_files = true;
+option java_package = "com.currencyrpc.grpc";
+option java_outer_classname = "CurrencyProto";
+
+service CurrencyService {
+  rpc ConvertCurrency(ConvertRequest) returns (ConvertResponse);
+  rpc GetSupportedCurrencies(SupportedCurrenciesRequest) returns (SupportedCurrenciesResponse);
+  rpc WatchExchangeRate(RateRequest) returns (stream RateUpdate);
+}
+
+// Decimal strings preserve precision across languages. Use '.' as separator.
+message ConvertRequest {
+  string from_currency = 1;
+  string to_currency = 2;
+  string amount = 3;
+}
+message ConvertResponse {
+  string from_currency = 1;
+  string to_currency = 2;
+  string original_amount = 3;
+  string converted_amount = 4;
+  string exchange_rate = 5;
+  string message = 6;
+}
+message SupportedCurrenciesRequest {}
+message SupportedCurrenciesResponse {
+  repeated string currencies = 1;
+}
+message RateRequest {
+  string from_currency = 1;
+  string to_currency = 2;
+}
+message RateUpdate {
+  string from_currency = 1;
+  string to_currency = 2;
+  string exchange_rate = 3;
+  int32 sequence = 4;
+  int64 timestamp_epoch_millis = 5;
+}
